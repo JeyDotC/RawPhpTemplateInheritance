@@ -37,12 +37,23 @@ class RawTemplate {
      */
     private $parent;
 
+    /**
+     * Creates a new raw template.
+     * 
+     * @param string $file The file to be loaded.
+     * @param array $data The data that will be available for the template.
+     */
     function __construct($file, array $data = array()) {
         $this->file = $file;
         $this->data = $data;
         $this->process($file);
     }
 
+    /**
+     * 
+     * 
+     * @param string $parentFile
+     */
     function extend($parentFile) {
         $this->parent = new RawTemplate($parentFile, $this->data);
     }
@@ -86,6 +97,16 @@ class RawTemplate {
         }
 
         return $result . $this->foot;
+    }
+
+    public function renderParentContent() {
+        if ($this->currentPlaceHolder
+                && $this->parent instanceof RawTemplate
+                && isset($this->parent->blocksById[$this->currentPlaceHolder->getId()])) {
+            foreach ($this->parent->blocksById[$this->currentPlaceHolder->getId()] as $placeHolder) {
+                echo $placeHolder->getContent();
+            }
+        }
     }
 
     public function debug() {

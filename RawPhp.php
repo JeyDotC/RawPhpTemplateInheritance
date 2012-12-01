@@ -19,6 +19,9 @@ function ui_include($file) {
     RawTemplate::runingInstance()->includeTemplate($file);
 }
 
+function ui_parent() {
+    RawTemplate::runingInstance()->renderParentContent();
+}
 /**
  * Raw PHP templating engine
  *
